@@ -104,7 +104,7 @@ trait DBTestSetup[DBTransactor] {
 
   /** @return
     *   The schema name in the format of:
-    *   ${getClass.SimpleName()_${testLineNumber Fallback to testName hash if line number not available}}
+    *   {getClass.SimpleName()_{testLineNumber Fallback to testName hash if line number not available}}
     */
   def schemaName(meta: TestData): SchemaName =
     truncateSchemaName(SchemaName(s"${schemaNameFromClassAndLineNumber(meta)}"))
