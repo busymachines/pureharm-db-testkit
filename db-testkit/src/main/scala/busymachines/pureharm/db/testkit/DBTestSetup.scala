@@ -1,19 +1,19 @@
-/** Copyright (c) 2019 BusyMachines
-  *
-  * See company homepage at: https://www.busymachines.com/
-  *
-  * Licensed under the Apache License, Version 2.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  * http://www.apache.org/licenses/LICENSE-2.0
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+/*
+ * Copyright 2019 BusyMachines
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package busymachines.pureharm.db.testkit
 
 import busymachines.pureharm.anomaly.InconsistentStateCatastrophe
@@ -33,12 +33,12 @@ trait DBTestSetup[DBTransactor] {
 
   implicit class TestSetupClassName(config: DBConnectionConfig) {
 
-    /** @see [[schemaName]]
+    /** @see schemaName
       */
     def withSchemaFromClassAndTest(meta:   TestData): DBConnectionConfig =
       config.copy(schema = Option(schemaName(meta)))
 
-    /** @see [[schemaName]]
+    /** @see schemaName
       */
     def withSchemaFromClassAndTest(prefix: String, meta: TestData): DBConnectionConfig =
       config.copy(schema = Option(schemaName(prefix, meta)))
@@ -47,8 +47,8 @@ trait DBTestSetup[DBTransactor] {
   /** Should be overridden to create a connection config appropriate for the test
     *
     * To ensure unique schema names for test cases use the extension methods:
-    * [[TestSetupClassName.withSchemaFromClassAndTest]]
-    * or the explicit variants [[schemaName]]
+    * TestSetupClassName.withSchemaFromClassAndTest
+    * or the explicit variants schemaName
     */
   def dbConfig(meta: TestData)(implicit logger: TestLogger): DBConnectionConfig
 
@@ -111,7 +111,7 @@ trait DBTestSetup[DBTransactor] {
 
   /** @return
     *   The schema name in the format of:
-    *   $prefix_${getClass.SimpleName()_${testLineNumber Fallback to testName hash if line number not available}}
+    *   prefix_{getClass.SimpleName()_{testLineNumber Fallback to testName hash if line number not available}}
     */
   def schemaName(prefix: String, meta: TestData): SchemaName =
     truncateSchemaName(SchemaName(s"${prefix}_${schemaNameFromClassAndLineNumber(meta)}"))
