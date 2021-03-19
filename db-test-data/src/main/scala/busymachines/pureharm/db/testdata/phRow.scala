@@ -22,21 +22,21 @@ import busymachines.pureharm.identifiable.Identifiable
   * @since 12 Jun 2019
   */
 final private[pureharm] case class PHRow(
-  id:           PhantomPK,
-  byte:         PhantomByte,
-  int:          PhantomInt,
-  long:         PhantomLong,
-  bigDecimal:   PhantomBigDecimal,
-  string:       PhantomString,
+  id:           SproutPK,
+  byte:         SproutByte,
+  int:          SproutInt,
+  long:         SproutLong,
+  bigDecimal:   SproutBigDecimal,
+  string:       SproutString,
   jsonbCol:     PHJSONCol,
-  optionalCol:  Option[PhantomString],
+  optionalCol:  Option[SproutString],
   uniqueString: UniqueString,
   uniqueInt:    UniqueInt,
   uniqueJSON:   UniqueJSON,
 )
 
 object PHRow {
-  implicit val identifiable: Identifiable[PHRow, PhantomPK] = Identifiable.mkIdentifiable
+  implicit val identifiable: Identifiable[PHRow, SproutPK] = Identifiable.mkIdentifiable
 }
 
 final private[pureharm] case class PHJSONCol(
@@ -45,10 +45,10 @@ final private[pureharm] case class PHJSONCol(
 )
 
 final case class ExtPHRow(
-  id:    PhantomUUID,
-  rowID: PhantomPK,
+  id:    SproutUUID,
+  rowID: SproutPK,
 )
 
 object ExtPHRow {
-  implicit val identifiable: Identifiable[ExtPHRow, PhantomUUID] = Identifiable.mkIdentifiable
+  implicit val identifiable: Identifiable[ExtPHRow, SproutUUID] = Identifiable.mkIdentifiable
 }

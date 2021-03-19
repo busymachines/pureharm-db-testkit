@@ -26,25 +26,25 @@ import busymachines.pureharm.sprout._
   */
 package object testdata {
 
-  object PhantomByte extends Sprout[Byte]
-  type PhantomByte = PhantomByte.Type
+  object SproutByte extends Sprout[Byte]
+  type SproutByte = SproutByte.Type
 
-  object PhantomInt extends Sprout[Int]
-  type PhantomInt = PhantomInt.Type
+  object SproutInt extends Sprout[Int]
+  type SproutInt = SproutInt.Type
 
-  object PhantomLong extends Sprout[Long]
-  type PhantomLong = PhantomLong.Type
+  object SproutLong extends Sprout[Long]
+  type SproutLong = SproutLong.Type
 
-  object PhantomBigDecimal extends Sprout[BigDecimal]
-  type PhantomBigDecimal = PhantomBigDecimal.Type
+  object SproutBigDecimal extends Sprout[BigDecimal]
+  type SproutBigDecimal = SproutBigDecimal.Type
 
-  object PhantomString extends Sprout[String]
-  type PhantomString = PhantomString.Type
+  object SproutString extends Sprout[String]
+  type SproutString = SproutString.Type
 
-  object PhantomPK extends Sprout[String] {
+  object SproutPK extends Sprout[String] {
     implicit val showPK: Show[this.Type] = Show[String].contramap(oldType)
   }
-  type PhantomPK = PhantomPK.Type
+  type SproutPK = SproutPK.Type
 
   object UniqueString extends Sprout[String]
   type UniqueString = UniqueString.Type
@@ -55,16 +55,16 @@ package object testdata {
   object UniqueJSON extends Sprout[PHJSONCol]
   type UniqueJSON = UniqueJSON.Type
 
-  object PhantomUUID extends Sprout[UUID] {
-    def unsafeFromString(s: String):      PhantomUUID = this(UUID.fromString(s))
-    def unsafeFromBytes(a:  Array[Byte]): PhantomUUID = this(UUID.nameUUIDFromBytes(a))
+  object SproutUUID extends Sprout[UUID] {
+    def unsafeFromString(s: String):      SproutUUID = this(UUID.fromString(s))
+    def unsafeFromBytes(a:  Array[Byte]): SproutUUID = this(UUID.nameUUIDFromBytes(a))
 
-    def unsafeGenerate: PhantomUUID = this(UUID.randomUUID())
-    def generate[F[_]: Sync]: F[PhantomUUID] = Sync[F].delay(unsafeGenerate)
+    def unsafeGenerate: SproutUUID = this(UUID.randomUUID())
+    def generate[F[_]: Sync]: F[SproutUUID] = Sync[F].delay(unsafeGenerate)
 
-    implicit val showUUID: Show[PhantomUUID] = Show.fromToString[PhantomUUID]
+    implicit val showUUID: Show[SproutUUID] = Show.fromToString[SproutUUID]
   }
-  type PhantomUUID = PhantomUUID.Type
+  type SproutUUID = SproutUUID.Type
 
   object schema {
     val PureharmRows:         TableName = TableName("pureharm_rows")

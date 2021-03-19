@@ -14,6 +14,7 @@ We do not even pretend to support anything other than Postgresql.
   - [pureharm-db-core](https://github.com/busymachines/pureharm-db-core/releases) `0.1.0`
   - [pureharm-db-flyway](https://github.com/busymachines/pureharm-db-flyway/releases) `0.1.0`
 - `"com.busymachines" %% s"pureharm-db-test-data" % "0.1.0"`
+  - used only for common tests between different DB modules
 
 ## usage
 
