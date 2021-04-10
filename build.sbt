@@ -90,7 +90,6 @@ val pureharmEffectsV    = "0.4.0"      //https://github.com/busymachines/purehar
 val pureharmDBCoreV     = "0.3.0"      //https://github.com/busymachines/pureharm-db-core/releases
 val pureharmDBFlywayV   = "0.3.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
 val pureharmTestkitV    = "0.3.0"      //https://github.com/busymachines/pureharm-testkit/releases
-val log4catsV           = "1.2.0"      //https://github.com/typelevel/log4cats/releases
 // format: on
 
 //=============================================================================
@@ -120,7 +119,6 @@ lazy val `db-testkit` = project
       "com.busymachines"  %% "pureharm-testkit"             % pureharmTestkitV    withSources(),
       "com.busymachines"  %% "pureharm-db-core"             % pureharmDBCoreV     withSources(),
       "com.busymachines"  %% "pureharm-db-flyway"           % pureharmDBFlywayV   withSources(),
-      "org.typelevel"     %% "log4cats-slf4j"               % log4catsV % Test    withSources(),
       // format: on
     ),
   ).settings(
