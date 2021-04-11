@@ -17,16 +17,20 @@
 package busymachines.pureharm.db.testkit
 
 import busymachines.pureharm.effects._
-import busymachines.pureharm.testkit.PureharmTestWithResource
+import busymachines.pureharm.testkit._
 
-abstract class DBTest[Trans] extends PureharmTestWithResource {
+abstract class DBTest[Trans] extends PureharmTest {
+  type ResourceType
+
   def setup: DBTestSetup[Trans]
 
-  def resource(meta: MetaData, trans: Trans): Resource[IO, ResourceType]
+  def resource(meta: TestOptions, trans: Trans): Resource[IO, ResourceType]
 
-  override def resource(meta: MetaData): Resource[IO, ResourceType] =
+  def testResource: SyncIO[FunFixture[ResourceType]] = ResourceFixture { testOptions =>
     for {
-      trans <- setup.transactor(meta)
-      fix   <- resource(meta, trans)
+      trans <- setup.transactor(testOptions)
+      fix   <- resource(testOptions, trans)
     } yield fix
+  }
+
 }
