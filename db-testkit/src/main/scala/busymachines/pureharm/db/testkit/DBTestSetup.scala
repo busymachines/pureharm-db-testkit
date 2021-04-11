@@ -22,26 +22,25 @@ import busymachines.pureharm.db.flyway.FlywayConfig
 import busymachines.pureharm.effects._
 import busymachines.pureharm.effects.implicits._
 import busymachines.pureharm.testkit._
-import busymachines.pureharm.testkit.util.{MDCKeys, PureharmTestRuntime}
-import org.scalatest.TestData
+import busymachines.pureharm.testkit.util._
 
 /** @author Lorand Szakacs, https://github.com/lorandszakacs
   * @since 25 Jun 2020
   */
-trait DBTestSetup[DBTransactor] {
+trait DBTestSetup[DBTransactor] extends PureharmTestRuntimeLazyConversions {
   final type RT = PureharmTestRuntime
 
   implicit class TestSetupClassName(config: DBConnectionConfig) {
 
     /** @see schemaName
       */
-    def withSchemaFromClassAndTest(meta:   TestData): DBConnectionConfig =
-      config.copy(schema = Option(schemaName(meta)))
+    def withSchemaFromClassAndTest(testOptions: TestOptions): DBConnectionConfig =
+      config.copy(schema = Option(schemaName(testOptions)))
 
     /** @see schemaName
       */
-    def withSchemaFromClassAndTest(prefix: String, meta: TestData): DBConnectionConfig =
-      config.copy(schema = Option(schemaName(prefix, meta)))
+    def withSchemaFromClassAndTest(prefix:      String, testOptions: TestOptions): DBConnectionConfig =
+      config.copy(schema = Option(schemaName(prefix, testOptions)))
   }
 
   /** Should be overridden to create a connection config appropriate for the test
@@ -50,31 +49,37 @@ trait DBTestSetup[DBTransactor] {
     * TestSetupClassName.withSchemaFromClassAndTest
     * or the explicit variants schemaName
     */
-  def dbConfig(meta: TestData)(implicit logger: TestLogger): DBConnectionConfig
+  def dbConfig(testOptions: TestOptions)(implicit logger: TestLogger): DBConnectionConfig
 
   //hack to remove unused param error
-  def flywayConfig(meta: TestData): Option[FlywayConfig] = Option(meta) >> Option.empty
+  def flywayConfig(testOptions: TestOptions): Option[FlywayConfig] = Option(testOptions) >> Option.empty
 
-  protected def dbTransactorInstance(meta: TestData)(implicit rt: RT, logger: TestLogger): Resource[IO, DBTransactor]
+  protected def dbTransactorInstance(
+    testOptions: TestOptions
+  )(implicit rt: RT, logger: TestLogger): Resource[IO, DBTransactor]
 
-  def transactor(meta: TestData)(implicit rt: RT, logger: TestLogger): Resource[IO, DBTransactor] =
+  def transactor(testOptions: TestOptions)(implicit rt: RT, logger: TestLogger): Resource[IO, DBTransactor] =
     for {
-      _ <- logger.info(MDCKeys(meta))("SETUP — init").to[Resource[IO, *]]
-      schema = dbConfig(meta).schema.getOrElse("public")
+      _ <- logger.info(MDCKeys.testSetup(testOptions))("SETUP — init").to[Resource[IO, *]]
+      schema = dbConfig(testOptions).schema.getOrElse("public")
       _       <-
         logger
-          .info(MDCKeys(meta) ++ Map("schema" -> schema))(s"SETUP — schema name for test: $schema")
+          .info(MDCKeys.testSetup(testOptions) ++ Map("schema" -> schema))(s"SETUP — schema name for test: $schema")
           .to[Resource[IO, *]]
-      _       <- _cleanDB(meta)
-      _       <- _initDB(meta)
-      fixture <- dbTransactorInstance(meta)
+      _       <- _cleanDB(testOptions)
+      _       <- _initDB(testOptions)
+      fixture <- dbTransactorInstance(testOptions)
     } yield fixture
 
-  @scala.annotation.nowarn
-  protected def _initDB(meta: TestData)(implicit rt: RT, logger: TestLogger): Resource[IO, Unit] =
+  protected def _initDB(testOptions: TestOptions)(implicit rt: RT, logger: TestLogger): Resource[IO, Unit] =
     for {
-      _    <- logger.info(MDCKeys(meta))("SETUP — preparing DB").to[Resource[IO, *]]
-      migs <- flyway.Flyway.migrate[IO](dbConfig = dbConfig(meta), flywayConfig(meta)).to[Resource[IO, *]]
+      _    <- logger.info(MDCKeys.testSetup(testOptions))("SETUP — preparing DB").to[Resource[IO, *]]
+      att  <- flyway.Flyway
+        .migrate[IO](dbConfig = dbConfig(testOptions), flywayConfig(testOptions))
+        .timedAttempt()
+        .to[Resource[IO, *]]
+      (duration, migsAtt) = att
+      migs <- migsAtt.liftTo[Resource[IO, *]]
       _    <- (migs <= 0).ifTrueRaise[Resource[IO, *]](
         InconsistentStateCatastrophe(
           """
@@ -91,44 +96,35 @@ trait DBTestSetup[DBTransactor] {
         )
       )
 
-      _ <- logger.info(MDCKeys(meta))("SETUP — done preparing DB").to[Resource[IO, *]]
+      _ <- logger.info(MDCKeys.testSetup(testOptions, duration))("SETUP — done preparing DB").to[Resource[IO, *]]
     } yield ()
 
-  @scala.annotation.nowarn
-  protected def _cleanDB(meta: TestData)(implicit rt: RT, logger: TestLogger): Resource[IO, Unit] =
+  protected def _cleanDB(meta: TestOptions)(implicit rt: RT, logger: TestLogger): Resource[IO, Unit] =
     for {
-      _ <- logger.info(MDCKeys(meta))("SETUP — cleaning DB for a clean slate").to[Resource[IO, *]]
+      _ <- logger.info(MDCKeys.testSetup(meta))("SETUP — cleaning DB for a clean slate").to[Resource[IO, *]]
       _ <- flyway.Flyway.clean[IO](dbConfig(meta)).to[Resource[IO, *]]
-      _ <- logger.info(MDCKeys(meta))("SETUP — done cleaning DB").to[Resource[IO, *]]
+      _ <- logger.info(MDCKeys.testSetup(meta))("SETUP — done cleaning DB").to[Resource[IO, *]]
     } yield ()
 
   /** @return
     *   The schema name in the format of:
-    *   {getClass.SimpleName()_{testLineNumber Fallback to testName hash if line number not available}}
+    *   $${getClass.SimpleName()_$${testLineNumber}}
     */
-  def schemaName(meta: TestData): SchemaName =
-    truncateSchemaName(SchemaName(s"${schemaNameFromClassAndLineNumber(meta)}"))
+  def schemaName(testOptions: TestOptions): SchemaName =
+    truncateSchemaName(SchemaName(s"${schemaNameFromClassAndLineNumber(testOptions)}"))
 
   /** @return
     *   The schema name in the format of:
-    *   prefix_{getClass.SimpleName()_{testLineNumber Fallback to testName hash if line number not available}}
+    *   prefix_{getClass.SimpleName()_{testLineNumber}}
     */
-  def schemaName(prefix: String, meta: TestData): SchemaName =
-    truncateSchemaName(SchemaName(s"${prefix}_${schemaNameFromClassAndLineNumber(meta)}"))
+  def schemaName(prefix: String, testOptions: TestOptions): SchemaName =
+    truncateSchemaName(SchemaName(s"${prefix}_${schemaNameFromClassAndLineNumber(testOptions)}"))
 
   protected def truncateSchemaName(s: SchemaName): SchemaName = SchemaName(s.takeRight(63))
 
-  protected def schemaNameFromClassAndLineNumber(meta: TestData): SchemaName =
-    SchemaName(s"${schemaNameFromClass}_${lineNumberOrTestNameHash(meta)}")
+  protected def schemaNameFromClassAndLineNumber(meta: TestOptions): SchemaName =
+    SchemaName(s"${schemaNameFromClass}_${meta.location.line.toString}")
 
   protected def schemaNameFromClass: String =
     getClass.getSimpleName.replace("$", "").toLowerCase
-
-  /** When creating a schema we discriminate using the line number when defined,
-    * otherwise using the hash of the test name, we print it out to the console,
-    * so no worries, you can still identify the test easily.
-    * @return
-    */
-  protected def lineNumberOrTestNameHash(meta: TestData): String =
-    meta.pos.map(_.lineNumber.toString).getOrElse(s"${meta.name.hashCode.toString}")
 }

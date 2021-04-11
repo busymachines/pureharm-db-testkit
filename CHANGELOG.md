@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # unreleased
 
+### breaking changes:
+
+- upgraded to `pureharm-testkit` 0.3.0` which replaces scalatest w/ munit.
+- you have to use `testResource.test("name")` in all your tests to be consistent w/ munit handling of resources.
+
 ### dependency upgrades
 
 - [pureharm-core-anomaly](https://github.com/busymachines/pureharm-core/releases) `0.2.0`
