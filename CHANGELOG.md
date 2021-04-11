@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [pureharm-core-identifiable](https://github.com/busymachines/pureharm-core/releases) `0.2.0`
 - [pureharm-effects-cats](https://github.com/busymachines/pureharm-effects-cats/releases) `0.4.0`
 - [pureharm-testkit](https://github.com/busymachines/pureharm-testkit/releases) `0.3.0`
-- [pureharm-db-core](https://github.com/busymachines/pureharm-db-core/releases) `0.3.0`
-- [pureharm-db-flyway](https://github.com/busymachines/pureharm-db-flyway/releases) `0.3.0`
+- [pureharm-db-core](https://github.com/busymachines/pureharm-db-core/releases) `0.4.0`
+- [pureharm-db-flyway](https://github.com/busymachines/pureharm-db-flyway/releases) `0.4.0`
 
 # 0.1.0
 

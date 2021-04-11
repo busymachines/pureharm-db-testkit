@@ -87,8 +87,8 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 // format: off
 val pureharmCoreV       = "0.2.0"      //https://github.com/busymachines/pureharm-core/releases
 val pureharmEffectsV    = "0.4.0"      //https://github.com/busymachines/pureharm-effects-cats/releases
-val pureharmDBCoreV     = "0.3.0"      //https://github.com/busymachines/pureharm-db-core/releases
-val pureharmDBFlywayV   = "0.3.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
+val pureharmDBCoreV     = "0.4.0"      //https://github.com/busymachines/pureharm-db-core/releases
+val pureharmDBFlywayV   = "0.4.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
 val pureharmTestkitV    = "0.3.0"      //https://github.com/busymachines/pureharm-testkit/releases
 // format: on
 
