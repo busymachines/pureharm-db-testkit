@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - upgraded to `pureharm-testkit` 0.3.0` which replaces scalatest w/ munit.
 - you have to use `testResource.test("name")` in all your tests to be consistent w/ munit handling of resources.
+- `DBTestSetup.flywayConfig` now takes an `implicit logger`, should be source compatible. Updated to copy schema name from the db config by default. Since most likely it's wrong if the schema name is different between the two configs.
 
 ### dependency upgrades
 

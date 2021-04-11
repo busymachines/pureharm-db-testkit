@@ -51,12 +51,12 @@ trait DBTestSetup[DBTransactor] extends PureharmTestRuntimeLazyConversions {
     */
   def dbConfig(testOptions: TestOptions)(implicit logger: TestLogger): DBConnectionConfig
 
-  //hack to remove unused param error
-  def flywayConfig(testOptions: TestOptions): Option[FlywayConfig] = Option(testOptions) >> Option.empty
+  def flywayConfig(testOptions: TestOptions)(implicit logger: TestLogger): Option[FlywayConfig] =
+    dbConfig(testOptions).schema.map(dbSchema => FlywayConfig.defaultConfig.copy(schemas = List(dbSchema)))
 
   protected def dbTransactorInstance(
-    testOptions: TestOptions
-  )(implicit rt: RT, logger: TestLogger): Resource[IO, DBTransactor]
+    testOptions:                TestOptions
+  )(implicit rt:                RT, logger:                   TestLogger): Resource[IO, DBTransactor]
 
   def transactor(testOptions: TestOptions)(implicit rt: RT, logger: TestLogger): Resource[IO, DBTransactor] =
     for {
