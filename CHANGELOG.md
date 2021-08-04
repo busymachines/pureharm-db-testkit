@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # unreleased
 
+
+This is the first release for a stable Scala 3 version, and with cats-effect 3 support!
+
+### :warning: breaking
+- `pureharm-db-testkit` now depends on cats-effect `3.2.1`, and the corresponding dependencies for it.
+- `pureharm-db-testkit-ce2` is binary, and source compatible with `pureharm-db-testkit` from version `0.2.0`, so if you haven't migrated to CE3 yet, use the former module.
+
+### Dependency upgrades
+- [pureharm-core](https://github.com/busymachines/pureharm-core/releases) `0.3.0`
+- [pureharm-effects-cats](https://github.com/busymachines/pureharm-effects-cats/releases) `0.5.0`
+- [log4cats-core](https://github.com/typelevel/log4cats/releases) `1.3.1`, `2.1.1`
+
+### New Scala versions:
+- `2.13.6`
+- `3.0.1` for JVM + JS platforms
+- drop `3.0.0-RC2`, `3.0.0-RC3`
+
+### internals
+- bump scalafmt to `3.0.0-RC6` — from `2.7.5`
+- bump sbt to `1.5.5`
+- bump sbt-spiewak to `0.21.0`
+- bump sbt-scalafmt to `2.4.3`
+- bump sbt-scalajs-crossproject to `1.1.0`
+- bump sbt-scalajs to `1.6.0`
+
 # 0.2.0
 
 ### breaking changes:
