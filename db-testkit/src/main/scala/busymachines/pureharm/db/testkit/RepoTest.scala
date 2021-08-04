@@ -20,8 +20,10 @@ import busymachines.pureharm.db._
 import busymachines.pureharm.effects._
 import busymachines.pureharm.effects.implicits._
 
-/** @author Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 25 Jun 2020
+/** @author
+  *   Lorand Szakacs, https://github.com/lorandszakacs
+  * @since 25
+  *   Jun 2020
   */
 @scala.annotation.nowarn // remove once we remove deprecated methods from Repo.
 abstract class RepoTest[E, PK, Trans](implicit show: Show[PK]) extends DBTest[Trans] {
@@ -122,7 +124,7 @@ abstract class RepoTest[E, PK, Trans](implicit show: Show[PK]) extends DBTest[Tr
   testResource.test("insert row1 + row1Update1") { implicit repo: ResourceType =>
     for {
       _ <- repo.insert(data.row1)
-      _        = assume(data.row1 != data.row2, "Incorrect test data. We need at least one row that's different from row1")
+      _ = assume(data.row1 != data.row2, "Incorrect test data. We need at least one row that's different from row1")
       toUpdate = data.row1Update1
       _          <- repo.update(toUpdate)
       fetchedRow <- repo.retrieve(data.pk1)

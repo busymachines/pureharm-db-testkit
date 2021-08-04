@@ -20,16 +20,16 @@ import busymachines.pureharm.db.testkit._
 import busymachines.pureharm.effects._
 import busymachines.pureharm.identifiable._
 
-/** Common class to enforce a minimal contract for out of the box implementations
-  * of busymachines.pureharm.db.Repo for various backends. For now only for doobie, and slick,
-  * soon, hopefully for skunk too :D
+/** Common class to enforce a minimal contract for out of the box implementations of busymachines.pureharm.db.Repo for
+  * various backends. For now only for doobie, and slick, soon, hopefully for skunk too :D
   *
-  * In your own production code you probably create something similar that
-  * inherits from RepoTest to get a bunch of free tests for your
-  * Repos <3 to ensure that at least it typechecks.
+  * In your own production code you probably create something similar that inherits from RepoTest to get a bunch of free
+  * tests for your Repos <3 to ensure that at least it typechecks.
   *
-  * @author Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 25 Jun 2020
+  * @author
+  *   Lorand Szakacs, https://github.com/lorandszakacs
+  * @since 25
+  *   Jun 2020
   */
 abstract private[pureharm] class PHRowRepoTest[Trans] extends RepoTest[PHRow, SproutPK, Trans] {
   override type ResourceType <: PHRowRepo[IO]

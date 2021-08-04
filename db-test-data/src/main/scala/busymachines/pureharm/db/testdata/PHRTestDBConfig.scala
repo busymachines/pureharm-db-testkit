@@ -18,8 +18,10 @@ package busymachines.pureharm.db.testdata
 
 import busymachines.pureharm.db._
 
-/** @author Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 27 Jan 2020
+/** @author
+  *   Lorand Szakacs, https://github.com/lorandszakacs
+  * @since 27
+  *   Jan 2020
   */
 object PHRTestDBConfig {
 

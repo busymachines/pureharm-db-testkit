@@ -18,11 +18,12 @@ package busymachines.pureharm.db.testkit
 
 import busymachines.pureharm.identifiable.Identifiable
 
-/** Basic representation of data that the user ought to provide
-  * for a full test of the busymachines.pureharm.db.Repo
+/** Basic representation of data that the user ought to provide for a full test of the busymachines.pureharm.db.Repo
   *
-  * @author Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 25 Jun 2020
+  * @author
+  *   Lorand Szakacs, https://github.com/lorandszakacs
+  * @since 25
+  *   Jun 2020
   */
 trait RepoTestData[E, PK] {
 

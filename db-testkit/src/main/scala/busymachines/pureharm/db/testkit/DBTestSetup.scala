@@ -24,20 +24,24 @@ import busymachines.pureharm.effects.implicits._
 import busymachines.pureharm.testkit._
 import busymachines.pureharm.testkit.util._
 
-/** @author Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 25 Jun 2020
+/** @author
+  *   Lorand Szakacs, https://github.com/lorandszakacs
+  * @since 25
+  *   Jun 2020
   */
 trait DBTestSetup[DBTransactor] extends PureharmTestRuntimeLazyConversions {
   final type RT = PureharmTestRuntime
 
   implicit class TestSetupClassName(config: DBConnectionConfig) {
 
-    /** @see schemaName
+    /** @see
+      *   schemaName
       */
     def withSchemaFromClassAndTest(testOptions: TestOptions): DBConnectionConfig =
       config.copy(schema = Option(schemaName(testOptions)))
 
-    /** @see schemaName
+    /** @see
+      *   schemaName
       */
     def withSchemaFromClassAndTest(prefix:      String, testOptions: TestOptions): DBConnectionConfig =
       config.copy(schema = Option(schemaName(prefix, testOptions)))
@@ -46,8 +50,7 @@ trait DBTestSetup[DBTransactor] extends PureharmTestRuntimeLazyConversions {
   /** Should be overridden to create a connection config appropriate for the test
     *
     * To ensure unique schema names for test cases use the extension methods:
-    * TestSetupClassName.withSchemaFromClassAndTest
-    * or the explicit variants schemaName
+    * TestSetupClassName.withSchemaFromClassAndTest or the explicit variants schemaName
     */
   def dbConfig(testOptions: TestOptions)(implicit logger: TestLogger): DBConnectionConfig
 
@@ -107,15 +110,13 @@ trait DBTestSetup[DBTransactor] extends PureharmTestRuntimeLazyConversions {
     } yield ()
 
   /** @return
-    *   The schema name in the format of:
-    *   $${getClass.SimpleName()_$${testLineNumber}}
+    *   The schema name in the format of: $${getClass.SimpleName()_$${testLineNumber}}
     */
   def schemaName(testOptions: TestOptions): SchemaName =
     truncateSchemaName(SchemaName(s"${schemaNameFromClassAndLineNumber(testOptions)}"))
 
   /** @return
-    *   The schema name in the format of:
-    *   prefix_{getClass.SimpleName()_{testLineNumber}}
+    *   The schema name in the format of: prefix_{getClass.SimpleName()_{testLineNumber}}
     */
   def schemaName(prefix: String, testOptions: TestOptions): SchemaName =
     truncateSchemaName(SchemaName(s"${prefix}_${schemaNameFromClassAndLineNumber(testOptions)}"))

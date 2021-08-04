@@ -21,8 +21,10 @@ import busymachines.pureharm.effects._
 import busymachines.pureharm.effects.implicits._
 import busymachines.pureharm.sprout._
 
-/** @author Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 13 Jun 2019
+/** @author
+  *   Lorand Szakacs, https://github.com/lorandszakacs
+  * @since 13
+  *   Jun 2019
   */
 package object testdata {
 
