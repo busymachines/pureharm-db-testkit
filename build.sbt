@@ -18,12 +18,12 @@
 //============================== build details ================================
 //=============================================================================
 
-addCommandAlias("github-gen", "githubWorkflowGenerate")
-addCommandAlias("github-check", "githubWorkflowCheck")
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-val Scala213  = "2.13.5"
-val Scala3RC1 = "3.0.0-RC1"
+// format: off
+val Scala213    = "2.13.6"
+val Scala3      = "3.0.1"
+// format: on
 
 //=============================================================================
 //============================ publishing details =============================
@@ -70,12 +70,12 @@ ThisBuild / spiewakMainBranches       := List("main")
 ThisBuild / Test / publishArtifact    := false
 
 ThisBuild / scalaVersion       := Scala213
-ThisBuild / crossScalaVersions := List(Scala213) //List(Scala213, Scala3RC1)
+ThisBuild / crossScalaVersions := List(Scala213, Scala3)
 
 //required for binary compat checks
 ThisBuild / versionIntroduced := Map(
-  Scala213  -> "0.1.0",
-  Scala3RC1 -> "0.1.0",
+  Scala213 -> "0.1.0",
+  Scala3   -> "0.3.0",
 )
 
 //=============================================================================
@@ -85,11 +85,11 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 // format: off
-val pureharmCoreV       = "0.2.0"      //https://github.com/busymachines/pureharm-core/releases
-val pureharmEffectsV    = "0.4.0"      //https://github.com/busymachines/pureharm-effects-cats/releases
-val pureharmDBCoreV     = "0.4.0"      //https://github.com/busymachines/pureharm-db-core/releases
-val pureharmDBFlywayV   = "0.4.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
-val pureharmTestkitV    = "0.3.0"      //https://github.com/busymachines/pureharm-testkit/releases
+val pureharmCoreV       = "0.3.0"      //https://github.com/busymachines/pureharm-core/releases
+val pureharmEffectsV    = "0.5.0"      //https://github.com/busymachines/pureharm-effects-cats/releases
+val pureharmDBCoreV     = "0.5.0"      //https://github.com/busymachines/pureharm-db-core/releases
+val pureharmDBFlywayV   = "0.5.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
+val pureharmTestkitV    = "0.4.0"      //https://github.com/busymachines/pureharm-testkit/releases
 // format: on
 
 //=============================================================================
