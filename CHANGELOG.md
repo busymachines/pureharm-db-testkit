@@ -32,8 +32,6 @@ This is the first release for a stable Scala 3 version, and with cats-effect 3 s
 - bump sbt to `1.5.5`
 - bump sbt-spiewak to `0.21.0`
 - bump sbt-scalafmt to `2.4.3`
-- bump sbt-scalajs-crossproject to `1.1.0`
-- bump sbt-scalajs to `1.6.0`
 
 # 0.2.0
 
