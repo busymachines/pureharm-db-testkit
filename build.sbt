@@ -88,7 +88,7 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 val pureharmCoreV       = "0.3.0"      //https://github.com/busymachines/pureharm-core/releases
 val pureharmEffectsV    = "0.5.0"      //https://github.com/busymachines/pureharm-effects-cats/releases
 val pureharmDBCoreV     = "0.5.0"      //https://github.com/busymachines/pureharm-db-core/releases
-val pureharmDBFlywayV   = "0.5.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
+val pureharmDBFlywayV   = "0.6.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
 val pureharmTestkitV    = "0.4.0"      //https://github.com/busymachines/pureharm-testkit/releases
 // format: on
 
@@ -101,6 +101,8 @@ lazy val root = project
   .aggregate(
     `db-testkit`,
     `db-test-data`,
+    `db-testkit-ce2`,
+    `db-test-data-ce2`,
   )
   .enablePlugins(NoPublishPlugin)
   .enablePlugins(SonatypeCiReleasePlugin)
@@ -112,13 +114,13 @@ lazy val `db-testkit` = project
     name := "pureharm-db-testkit",
     libraryDependencies ++= Seq(
       // format: off
-      "com.busymachines"  %% "pureharm-core-identifiable"   % pureharmCoreV       withSources(),
-      "com.busymachines"  %% "pureharm-core-anomaly"        % pureharmCoreV       withSources(),
-      "com.busymachines"  %% "pureharm-core-sprout"         % pureharmCoreV       withSources(),
-      "com.busymachines"  %% "pureharm-effects-cats"        % pureharmEffectsV    withSources(),
-      "com.busymachines"  %% "pureharm-testkit"             % pureharmTestkitV    withSources(),
-      "com.busymachines"  %% "pureharm-db-core"             % pureharmDBCoreV     withSources(),
-      "com.busymachines"  %% "pureharm-db-flyway"           % pureharmDBFlywayV   withSources(),
+      "com.busymachines"      %% "pureharm-core-identifiable"     % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-anomaly"          % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-sprout"           % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-effects-cats"          % pureharmEffectsV        withSources(),
+      "com.busymachines"      %% "pureharm-testkit"               % pureharmTestkitV        withSources(),
+      "com.busymachines"      %% "pureharm-db-core"               % pureharmDBCoreV         withSources(),
+      "com.busymachines"      %% "pureharm-db-flyway"             % pureharmDBFlywayV       withSources(),
       // format: on
     ),
   )
@@ -136,6 +138,38 @@ lazy val `db-test-data` = project
   )
   .dependsOn(
     `db-testkit`
+  )
+
+lazy val `db-testkit-ce2` = project
+  .settings(commonSettings)
+  .settings(
+    name := "pureharm-db-testkit-ce2",
+    libraryDependencies ++= Seq(
+      // format: off
+      "com.busymachines"      %% "pureharm-core-identifiable"     % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-anomaly"          % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-sprout"           % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-effects-cats-2"        % pureharmEffectsV        withSources(),
+      "com.busymachines"      %% "pureharm-testkit-ce2"           % pureharmTestkitV        withSources(),
+      "com.busymachines"      %% "pureharm-db-core"               % pureharmDBCoreV         withSources(),
+      "com.busymachines"      %% "pureharm-db-flyway-ce2"         % pureharmDBFlywayV       withSources(),
+      // format: on
+    ),
+  )
+  .settings(
+    javaOptions ++= Seq("-source", "1.8", "-target", "1.8")
+  )
+
+lazy val `db-test-data-ce2` = project
+  .settings(commonSettings)
+  .settings(
+    name := "pureharm-db-test-data-ce2"
+  )
+  .settings(
+    javaOptions ++= Seq("-source", "1.8", "-target", "1.8")
+  )
+  .dependsOn(
+    `db-testkit-ce2`
   )
 
 //=============================================================================
