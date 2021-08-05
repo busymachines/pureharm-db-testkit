@@ -4,17 +4,21 @@ See [changelog](./CHANGELOG.md).
 
 We do not even pretend to support anything other than Postgresql.
 
+## Scala versions
+- `2.13`: JVM
+- `3`: JVM
+
 ## modules
 
-- `"com.busymachines" %% "pureharm-db-testkit" % "0.2.0"`. Which has these as its main dependencies:
-  - [pureharm-core-anomaly](https://github.com/busymachines/pureharm-core/releases) `0.2.0`
-  - [pureharm-core-sprout](https://github.com/busymachines/pureharm-core/releases) `0.2.0`
-  - [pureharm-core-identifiable](https://github.com/busymachines/pureharm-core/releases) `0.2.0`
-  - [pureharm-effects-cats](https://github.com/busymachines/pureharm-effects-cats/releases) `0.4.0`
-  - [pureharm-testkit](https://github.com/busymachines/pureharm-testkit/releases) `0.3.0`
-  - [pureharm-db-core](https://github.com/busymachines/pureharm-db-core/releases) `0.4.0`
-  - [pureharm-db-flyway](https://github.com/busymachines/pureharm-db-flyway/releases) `0.4.0`
-- `"com.busymachines" %% "pureharm-db-test-data" % "0.2.0"`
+- `"com.busymachines" %% "pureharm-db-testkit" % "0.3.0"`. Which has these as its main dependencies:
+  - [pureharm-core-anomaly](https://github.com/busymachines/pureharm-core/releases) `0.3.0`
+  - [pureharm-core-sprout](https://github.com/busymachines/pureharm-core/releases) `0.3.0`
+  - [pureharm-core-identifiable](https://github.com/busymachines/pureharm-core/releases) `0.3.0`
+  - [pureharm-effects-cats](https://github.com/busymachines/pureharm-effects-cats/releases) `0.5.0`
+  - [pureharm-testkit](https://github.com/busymachines/pureharm-testkit/releases) `0.4.0`
+  - [pureharm-db-core](https://github.com/busymachines/pureharm-db-core/releases) `0.5.0`
+  - [pureharm-db-flyway](https://github.com/busymachines/pureharm-db-flyway/releases) `0.6.0`
+- `"com.busymachines" %% "pureharm-db-test-data" % "0.3.0"`
   - used only for common tests between different DB modules
 
 ## usage

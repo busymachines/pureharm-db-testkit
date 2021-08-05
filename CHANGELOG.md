@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # unreleased
 
+# 0.3.0
 
 This is the first release for a stable Scala 3 version, and with cats-effect 3 support!
 
@@ -17,7 +18,9 @@ This is the first release for a stable Scala 3 version, and with cats-effect 3 s
 ### Dependency upgrades
 - [pureharm-core](https://github.com/busymachines/pureharm-core/releases) `0.3.0`
 - [pureharm-effects-cats](https://github.com/busymachines/pureharm-effects-cats/releases) `0.5.0`
-- [log4cats-core](https://github.com/typelevel/log4cats/releases) `1.3.1`, `2.1.1`
+- [pureharm-testkit](https://github.com/busymachines/pureharm-testkit/releases) `0.4.0`
+- [pureharm-db-core](https://github.com/busymachines/pureharm-db-core/releases) `0.5.0`
+- [pureharm-db-flyway](https://github.com/busymachines/pureharm-db-flyway/releases) `0.6.0`
 
 ### New Scala versions:
 - `2.13.6`
