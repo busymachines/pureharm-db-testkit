@@ -18,12 +18,12 @@
 //============================== build details ================================
 //=============================================================================
 
-addCommandAlias("github-gen", "githubWorkflowGenerate")
-addCommandAlias("github-check", "githubWorkflowCheck")
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-val Scala213  = "2.13.5"
-val Scala3RC1 = "3.0.0-RC1"
+// format: off
+val Scala213    = "2.13.6"
+val Scala3      = "3.0.1"
+// format: on
 
 //=============================================================================
 //============================ publishing details =============================
@@ -32,10 +32,10 @@ val Scala3RC1 = "3.0.0-RC1"
 //see: https://github.com/xerial/sbt-sonatype#buildsbt
 ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 
-ThisBuild / baseVersion  := "0.2"
-ThisBuild / organization := "com.busymachines"
+ThisBuild / baseVersion      := "0.3"
+ThisBuild / organization     := "com.busymachines"
 ThisBuild / organizationName := "BusyMachines"
-ThisBuild / homepage     := Option(url("https://github.com/busymachines/pureharm-db-testkit"))
+ThisBuild / homepage         := Option(url("https://github.com/busymachines/pureharm-db-testkit"))
 
 ThisBuild / scmInfo := Option(
   ScmInfo(
@@ -44,8 +44,8 @@ ThisBuild / scmInfo := Option(
   )
 )
 
-/** I want my email. So I put this here. To reduce a few lines of code,
-  * the sbt-spiewak plugin generates this (except email) from these two settings:
+/** I want my email. So I put this here. To reduce a few lines of code, the sbt-spiewak plugin generates this (except
+  * email) from these two settings:
   * {{{
   * ThisBuild / publishFullName   := "Loránd Szakács"
   * ThisBuild / publishGithubUser := "lorandszakacs"
@@ -60,7 +60,7 @@ ThisBuild / developers := List(
   )
 )
 
-ThisBuild / startYear := Some(2019)
+ThisBuild / startYear  := Some(2019)
 ThisBuild / licenses   := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
 //until we get to 1.0.0, we keep strictSemVer false
@@ -70,12 +70,12 @@ ThisBuild / spiewakMainBranches       := List("main")
 ThisBuild / Test / publishArtifact    := false
 
 ThisBuild / scalaVersion       := Scala213
-ThisBuild / crossScalaVersions := List(Scala213) //List(Scala213, Scala3RC1)
+ThisBuild / crossScalaVersions := List(Scala213, Scala3)
 
 //required for binary compat checks
 ThisBuild / versionIntroduced := Map(
-  Scala213  -> "0.1.0",
-  Scala3RC1 -> "0.1.0",
+  Scala213 -> "0.1.0",
+  Scala3   -> "0.3.0",
 )
 
 //=============================================================================
@@ -85,11 +85,11 @@ ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
 ThisBuild / resolvers += Resolver.sonatypeRepo("snapshots")
 
 // format: off
-val pureharmCoreV       = "0.2.0"      //https://github.com/busymachines/pureharm-core/releases
-val pureharmEffectsV    = "0.4.0"      //https://github.com/busymachines/pureharm-effects-cats/releases
-val pureharmDBCoreV     = "0.4.0"      //https://github.com/busymachines/pureharm-db-core/releases
-val pureharmDBFlywayV   = "0.4.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
-val pureharmTestkitV    = "0.3.0"      //https://github.com/busymachines/pureharm-testkit/releases
+val pureharmCoreV       = "0.3.0"      //https://github.com/busymachines/pureharm-core/releases
+val pureharmEffectsV    = "0.5.0"      //https://github.com/busymachines/pureharm-effects-cats/releases
+val pureharmDBCoreV     = "0.5.0"      //https://github.com/busymachines/pureharm-db-core/releases
+val pureharmDBFlywayV   = "0.6.0"      //https://github.com/busymachines/pureharm-db-flyway/releases
+val pureharmTestkitV    = "0.4.0"      //https://github.com/busymachines/pureharm-testkit/releases
 // format: on
 
 //=============================================================================
@@ -101,6 +101,8 @@ lazy val root = project
   .aggregate(
     `db-testkit`,
     `db-test-data`,
+    `db-testkit-ce2`,
+    `db-test-data-ce2`,
   )
   .enablePlugins(NoPublishPlugin)
   .enablePlugins(SonatypeCiReleasePlugin)
@@ -112,27 +114,62 @@ lazy val `db-testkit` = project
     name := "pureharm-db-testkit",
     libraryDependencies ++= Seq(
       // format: off
-      "com.busymachines"  %% "pureharm-core-identifiable"   % pureharmCoreV       withSources(),
-      "com.busymachines"  %% "pureharm-core-anomaly"        % pureharmCoreV       withSources(),
-      "com.busymachines"  %% "pureharm-core-sprout"         % pureharmCoreV       withSources(),
-      "com.busymachines"  %% "pureharm-effects-cats"        % pureharmEffectsV    withSources(),
-      "com.busymachines"  %% "pureharm-testkit"             % pureharmTestkitV    withSources(),
-      "com.busymachines"  %% "pureharm-db-core"             % pureharmDBCoreV     withSources(),
-      "com.busymachines"  %% "pureharm-db-flyway"           % pureharmDBFlywayV   withSources(),
+      "com.busymachines"      %% "pureharm-core-identifiable"     % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-anomaly"          % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-sprout"           % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-effects-cats"          % pureharmEffectsV        withSources(),
+      "com.busymachines"      %% "pureharm-testkit"               % pureharmTestkitV        withSources(),
+      "com.busymachines"      %% "pureharm-db-core"               % pureharmDBCoreV         withSources(),
+      "com.busymachines"      %% "pureharm-db-flyway"             % pureharmDBFlywayV       withSources(),
       // format: on
     ),
-  ).settings(
+  )
+  .settings(
     javaOptions ++= Seq("-source", "1.8", "-target", "1.8")
   )
 
 lazy val `db-test-data` = project
   .settings(commonSettings)
   .settings(
-    name := "pureharm-db-test-data",
-  ).settings(
+    name := "pureharm-db-test-data"
+  )
+  .settings(
     javaOptions ++= Seq("-source", "1.8", "-target", "1.8")
-  ).dependsOn(
+  )
+  .dependsOn(
     `db-testkit`
+  )
+
+lazy val `db-testkit-ce2` = project
+  .settings(commonSettings)
+  .settings(
+    name := "pureharm-db-testkit-ce2",
+    libraryDependencies ++= Seq(
+      // format: off
+      "com.busymachines"      %% "pureharm-core-identifiable"     % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-anomaly"          % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-core-sprout"           % pureharmCoreV           withSources(),
+      "com.busymachines"      %% "pureharm-effects-cats-2"        % pureharmEffectsV        withSources(),
+      "com.busymachines"      %% "pureharm-testkit-ce2"           % pureharmTestkitV        withSources(),
+      "com.busymachines"      %% "pureharm-db-core"               % pureharmDBCoreV         withSources(),
+      "com.busymachines"      %% "pureharm-db-flyway-ce2"         % pureharmDBFlywayV       withSources(),
+      // format: on
+    ),
+  )
+  .settings(
+    javaOptions ++= Seq("-source", "1.8", "-target", "1.8")
+  )
+
+lazy val `db-test-data-ce2` = project
+  .settings(commonSettings)
+  .settings(
+    name := "pureharm-db-test-data-ce2"
+  )
+  .settings(
+    javaOptions ++= Seq("-source", "1.8", "-target", "1.8")
+  )
+  .dependsOn(
+    `db-testkit-ce2`
   )
 
 //=============================================================================
@@ -140,16 +177,14 @@ lazy val `db-test-data` = project
 //=============================================================================
 
 lazy val commonSettings = Seq(
-  Compile / unmanagedSourceDirectories ++= {
-    val major = if (isDotty.value) "-3" else "-2"
-    List(CrossType.Pure, CrossType.Full).flatMap(
-      _.sharedSrcDir(baseDirectory.value, "main").toList.map(f => file(f.getPath + major))
-    )
-  },
-  Test / unmanagedSourceDirectories ++= {
-    val major = if (isDotty.value) "-3" else "-2"
-    List(CrossType.Pure, CrossType.Full).flatMap(
-      _.sharedSrcDir(baseDirectory.value, "test").toList.map(f => file(f.getPath + major))
-    )
-  },
+  scalacOptions ++= scalaCompilerOptions(scalaVersion.value)
 )
+
+def scalaCompilerOptions(scalaVersion: String): Seq[String] =
+  CrossVersion.partialVersion(scalaVersion) match {
+    case Some((2, _)) =>
+      Seq[String](
+        //"-Xsource:3"
+      )
+    case _            => Seq.empty[String]
+  }

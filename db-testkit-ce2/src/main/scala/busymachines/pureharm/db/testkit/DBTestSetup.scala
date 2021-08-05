@@ -79,10 +79,11 @@ trait DBTestSetup[DBTransactor] extends PureharmTestRuntimeLazyConversions {
       //just to eliminate unused warning, implementors of this class most likely to need this parameter
       _ <- Resource.pure[IO, RT](rt).void
       _ <- logger.info(MDCKeys.testSetup(testOptions))("SETUP — preparing DB").to[Resource[IO, *]]
-      t <- flyway.Flyway
-        .migrate[IO](dbConfig = dbConfig(testOptions), flywayConfig(testOptions))
-        .timedIn()
-        .toResource
+      t <- Resource.eval(
+        flyway.Flyway
+          .migrate[IO](dbConfig = dbConfig(testOptions), flywayConfig(testOptions))
+          .timedIn()
+      )
       (duration, migs) = t
       _ <- (migs <= 0).ifTrueRaise[Resource[IO, *]](
         InconsistentStateCatastrophe(

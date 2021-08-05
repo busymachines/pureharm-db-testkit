@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package busymachines.pureharm.db.testdata
+package busymachines.pureharm.db.testkit
 
-import busymachines.pureharm.db._
+import busymachines.pureharm.effects._
+import busymachines.pureharm.testkit._
 
-/** To be then implemented in the concrete slick, or doobie modules
-  *
-  * @author
-  *   Lorand Szakacs, https://github.com/lorandszakacs
-  * @since 13
-  *   Jun 2019
-  */
-private[pureharm] trait PHRowRepo[F[_]] extends Repo[F, PHRow, SproutPK]
+abstract class DBTest[Trans] extends PureharmTest {
+  type ResourceType
+
+  def setup: DBTestSetup[Trans]
+
+  def resource(meta: TestOptions, trans: Trans): Resource[IO, ResourceType]
+
+  def testResource: SyncIO[FunFixture[ResourceType]] = ResourceFixture { testOptions =>
+    for {
+      trans <- setup.transactor(testOptions)
+      fix   <- resource(testOptions, trans)
+    } yield fix
+  }
+
+}

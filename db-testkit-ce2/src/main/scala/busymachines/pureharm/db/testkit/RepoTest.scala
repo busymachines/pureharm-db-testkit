@@ -159,5 +159,4 @@ abstract class RepoTest[E, PK, Trans](implicit show: Show[PK]) extends DBTest[Tr
       } yield assertEquals(obtained = fetchedRow, expected = toUpdate)
     }
   }
-
 }
