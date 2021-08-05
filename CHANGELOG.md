@@ -24,7 +24,7 @@ This is the first release for a stable Scala 3 version, and with cats-effect 3 s
 
 ### New Scala versions:
 - `2.13.6`
-- `3.0.1` for JVM + JS platforms
+- `3.0.1`
 - drop `3.0.0-RC2`, `3.0.0-RC3`
 
 ### internals
